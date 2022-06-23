@@ -1,0 +1,25 @@
+{
+  "name": "example-codes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnUniFi/example-codes.git"
+  },
+  "author": "UnUniFi",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/UnUniFi/example-codes/issues"
+  },
+  "homepage": "https://github.com/UnUniFi/example-codes#readme",
+  "dependencies": {
+    "@cosmos-client/core": "^0.46.0-rc2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4",
+    "ununifi-client": "^0.46.0-rc2"
+  }
+}
