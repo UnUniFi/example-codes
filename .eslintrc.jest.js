@@ -9,7 +9,4 @@ module.exports = {
     },
   },
   extends: ["plugin:jest/all"],
-  rules: {
-    "/* eslint-disable jest/require-hook */": "disabled",
-  },
 };
