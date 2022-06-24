@@ -1,30 +1,18 @@
-import { cosmosclient, rest, proto } from "@cosmos-client/core";
-import Long from "long";
-import { convertUnknownAccountToBaseAccount } from "../../../utils/account/convertUnknownAccountToBaseAccount";
+import { cosmosclient, rest, proto } from '@cosmos-client/core';
+import Long from 'long';
+import { convertUnknownAccountToBaseAccount } from '../../../utils/account/convertUnknownAccountToBaseAccount';
 
 export const postTxBankMsgSend = async () => {
   // set bech32prefix to client
-  const bech32Prefix = "ununifi";
+  const bech32Prefix = 'ununifi';
   const accAddr = bech32Prefix;
   const accPub = bech32Prefix + cosmosclient.AddressPrefix.Public;
-  const valAddr =
-    bech32Prefix +
-    cosmosclient.AddressPrefix.Validator +
-    cosmosclient.AddressPrefix.Operator;
+  const valAddr = bech32Prefix + cosmosclient.AddressPrefix.Validator + cosmosclient.AddressPrefix.Operator;
   const valPub =
-    bech32Prefix +
-    cosmosclient.AddressPrefix.Validator +
-    cosmosclient.AddressPrefix.Operator +
-    cosmosclient.AddressPrefix.Public;
-  const consAddr =
-    bech32Prefix +
-    cosmosclient.AddressPrefix.Validator +
-    cosmosclient.AddressPrefix.Consensus;
+    bech32Prefix + cosmosclient.AddressPrefix.Validator + cosmosclient.AddressPrefix.Operator + cosmosclient.AddressPrefix.Public;
+  const consAddr = bech32Prefix + cosmosclient.AddressPrefix.Validator + cosmosclient.AddressPrefix.Consensus;
   const consPub =
-    bech32Prefix +
-    cosmosclient.AddressPrefix.Validator +
-    cosmosclient.AddressPrefix.Consensus +
-    cosmosclient.AddressPrefix.Public;
+    bech32Prefix + cosmosclient.AddressPrefix.Validator + cosmosclient.AddressPrefix.Consensus + cosmosclient.AddressPrefix.Public;
   const bech32PrefixConfig = {
     accAddr,
     accPub,
@@ -36,25 +24,22 @@ export const postTxBankMsgSend = async () => {
   cosmosclient.config.setBech32Prefix(bech32PrefixConfig);
 
   // prepare sender's account info
-  const senderMnemonic =
-    "month radio spell indicate eight treat expire ordinary buzz ten spray mad";
+  const senderMnemonic = 'month radio spell indicate eight treat expire ordinary buzz ten spray mad';
 
-  const senderPrivateKeyUint8Array =
-    await cosmosclient.generatePrivKeyFromMnemonic(senderMnemonic);
+  const senderPrivateKeyUint8Array = await cosmosclient.generatePrivKeyFromMnemonic(senderMnemonic);
   const senderPrivateKey = new proto.cosmos.crypto.secp256k1.PrivKey({
     key: senderPrivateKeyUint8Array,
   });
 
   const senderPublicKey = senderPrivateKey.pubKey();
 
-  const senderAccAddress =
-    cosmosclient.AccAddress.fromPublicKey(senderPublicKey);
+  const senderAccAddress = cosmosclient.AccAddress.fromPublicKey(senderPublicKey);
   const senderAccAddressString = senderAccAddress.toString();
 
   // set node info to client
-  const chainID = "ununifi-alpha-test-v2";
-  const restURL = "http://ununifi-alpha-test-v2.cauchye.net:1317";
-  const websocketURL = "ws://ununifi-alpha-test-v2.cauchye.net:26657";
+  const chainID = 'ununifi-alpha-test-v2';
+  const restURL = 'http://ununifi-alpha-test-v2.cauchye.net:1317';
+  const websocketURL = 'ws://ununifi-alpha-test-v2.cauchye.net:26657';
   const restApi = new cosmosclient.CosmosSDK(restURL, chainID);
   const websocketApi = new cosmosclient.CosmosSDK(websocketURL, chainID);
   const sdk = {
@@ -64,9 +49,7 @@ export const postTxBankMsgSend = async () => {
 
   // call api to get baseAccount info to get account.sequence and account_number
   const accountResponse = await rest.auth.account(sdk.rest, senderAccAddress);
-  const unknownAccount = cosmosclient.codec.protoJSONToInstance(
-    cosmosclient.codec.castProtoJSONOfProtoAny(accountResponse.data?.account)
-  );
+  const unknownAccount = cosmosclient.codec.protoJSONToInstance(cosmosclient.codec.castProtoJSONOfProtoAny(accountResponse.data?.account));
   const baseAccount = convertUnknownAccountToBaseAccount(unknownAccount);
   if (!baseAccount) {
     throw Error("Sender's account is invalid!");
@@ -74,12 +57,11 @@ export const postTxBankMsgSend = async () => {
   const sequence = baseAccount.sequence;
 
   // build MsgSend
-  const recipientAccAddressString =
-    "ununifi18y5nnx3r9s4w398sn0nqcykh2y7sx8ljd423t6";
+  const recipientAccAddressString = 'ununifi18y5nnx3r9s4w398sn0nqcykh2y7sx8ljd423t6';
   const amount: proto.cosmos.base.v1beta1.ICoin[] = [
     {
-      denom: "uguu",
-      amount: "1",
+      denom: 'uguu',
+      amount: '1',
     },
   ];
   const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
@@ -107,7 +89,7 @@ export const postTxBankMsgSend = async () => {
       },
     ],
     fee: {
-      gas_limit: Long.fromString("200000"),
+      gas_limit: Long.fromString('200000'),
     },
   });
 

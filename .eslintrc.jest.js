@@ -1,12 +1,12 @@
 module.exports = {
   env: {
-    "jest/globals": true,
+    'jest/globals': true,
   },
-  plugins: ["jest"],
+  plugins: ['jest'],
   settings: {
     jest: {
-      version: require("jest/package.json").version,
+      version: require('jest/package.json').version,
     },
   },
-  extends: ["plugin:jest/all"],
+  extends: ['plugin:jest/all'],
 };
