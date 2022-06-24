@@ -21,7 +21,7 @@ Refer to the following links for each npm packages and implementations.
 You can execute example codes of query like this.
 
 ```bash
-npx ts-node cosmos/query/tendermint/get_node_info.ts
+npx ts-node src/cosmos/query/tendermint/get_node_info.ts
 ```
 
 You will get the following result.
@@ -307,7 +307,7 @@ OK
 You can execute example codes of tx like this.
 
 ```bash
-npx ts-node cosmos/tx/bank/post_tx_bank_msg_send.ts
+npx ts-node src/cosmos/tx/bank/post_tx_bank_msg_send.ts
 ```
 
 You will get the following result.
