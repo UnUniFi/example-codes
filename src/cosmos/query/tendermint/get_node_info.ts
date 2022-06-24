@@ -13,23 +13,5 @@ export const getNodeInfo = async () => {
   };
 
   const response = await rest.tendermint.getNodeInfo(sdk.rest);
-  console.log(response);
-
-  const url = response.config.url;
-  console.log(url);
-
-  const status = response.status;
-  console.log(status);
-
-  const statusText = response.statusText;
-  console.log(statusText);
-
-  const nodeInfo = response.data;
-  console.log(nodeInfo);
-
   return response;
 };
-
-(async () => {
-  return await getNodeInfo();
-})();

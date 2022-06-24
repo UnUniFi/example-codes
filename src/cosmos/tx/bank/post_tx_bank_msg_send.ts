@@ -1,6 +1,6 @@
 import { cosmosclient, rest, proto } from "@cosmos-client/core";
 import Long from "long";
-import { convertUnknownAccountToBaseAccount } from "../../../utils/convertUnknownAccountToBaseAccount";
+import { convertUnknownAccountToBaseAccount } from "../../../utils/account/convertUnknownAccountToBaseAccount";
 
 export const postTxBankMsgSend = async () => {
   // set bech32prefix to client
@@ -36,27 +36,20 @@ export const postTxBankMsgSend = async () => {
   cosmosclient.config.setBech32Prefix(bech32PrefixConfig);
 
   // prepare sender's account info
-  const mnemonic =
+  const senderMnemonic =
     "month radio spell indicate eight treat expire ordinary buzz ten spray mad";
-  console.log(mnemonic);
 
-  const privateKeyUint8Array = await cosmosclient.generatePrivKeyFromMnemonic(
-    mnemonic
-  );
-  const privateKey = new proto.cosmos.crypto.secp256k1.PrivKey({
-    key: privateKeyUint8Array,
+  const senderPrivateKeyUint8Array =
+    await cosmosclient.generatePrivKeyFromMnemonic(senderMnemonic);
+  const senderPrivateKey = new proto.cosmos.crypto.secp256k1.PrivKey({
+    key: senderPrivateKeyUint8Array,
   });
-  const privateKeyString = Buffer.from(privateKeyUint8Array).toString("hex");
-  console.log(privateKeyString);
 
-  const publicKey = privateKey.pubKey();
-  const publicKeyUint8Array = publicKey.bytes();
-  const publicKeyString = Buffer.from(publicKeyUint8Array).toString("hex");
-  console.log(publicKeyString);
+  const senderPublicKey = senderPrivateKey.pubKey();
 
-  const accAddress = cosmosclient.AccAddress.fromPublicKey(publicKey);
-  const accAddressString = accAddress.toString();
-  console.log(accAddressString);
+  const senderAccAddress =
+    cosmosclient.AccAddress.fromPublicKey(senderPublicKey);
+  const senderAccAddressString = senderAccAddress.toString();
 
   // set node info to client
   const chainID = "ununifi-alpha-test-v2";
@@ -70,7 +63,7 @@ export const postTxBankMsgSend = async () => {
   };
 
   // call api to get baseAccount info to get account.sequence and account_number
-  const accountResponse = await rest.auth.account(sdk.rest, accAddress);
+  const accountResponse = await rest.auth.account(sdk.rest, senderAccAddress);
   const unknownAccount = cosmosclient.codec.protoJSONToInstance(
     cosmosclient.codec.castProtoJSONOfProtoAny(accountResponse.data?.account)
   );
@@ -90,7 +83,7 @@ export const postTxBankMsgSend = async () => {
     },
   ];
   const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
-    from_address: accAddressString,
+    from_address: senderAccAddressString,
     to_address: recipientAccAddressString,
     amount,
   });
@@ -104,13 +97,13 @@ export const postTxBankMsgSend = async () => {
   const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
     signer_infos: [
       {
-        public_key: cosmosclient.codec.instanceToProtoAny(publicKey),
+        public_key: cosmosclient.codec.instanceToProtoAny(senderPublicKey),
         mode_info: {
           single: {
             mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
           },
         },
-        sequence: sequence,
+        sequence,
       },
     ],
     fee: {
@@ -123,7 +116,7 @@ export const postTxBankMsgSend = async () => {
   const signDocBytes = txBuilder.signDocBytes(baseAccount.account_number);
 
   // sign and add signature to tx data
-  const signature = privateKey.sign(signDocBytes);
+  const signature = senderPrivateKey.sign(signDocBytes);
   txBuilder.addSignature(signature);
 
   // broadcast signed tx
@@ -132,10 +125,5 @@ export const postTxBankMsgSend = async () => {
     mode: rest.tx.BroadcastTxMode.Block,
   });
 
-  console.log(txResponse);
   return txResponse;
 };
-
-(async () => {
-  return await postTxBankMsgSend();
-})();
