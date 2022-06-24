@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["standard", "prettier"],
+  extends: ["standard", ".eslintrc.jest.js", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
