@@ -71,8 +71,10 @@ export const postTxBankMsgSend = async () => {
   });
 
   // build TxBody
+  const memo = 'UnUniFi/example-codes';
   const txBody = new proto.cosmos.tx.v1beta1.TxBody({
     messages: [cosmosclient.codec.instanceToProtoAny(msgSend)],
+    memo,
   });
 
   // build AuthInfo
