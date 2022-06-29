@@ -4,6 +4,7 @@ import { examplePostTxNftMarketMsgPlaceBid } from './src/ununifi/tx/nftmarket/po
 import { examplePostTxPricefeedMsgPostPrice,examplePostTxPricefeedMsgPostPrice2 } from './src/ununifi/tx/pricefeed/post_tx_nftmarket_msg_postprice';
 import { examplePostTxCdpMsgCreateCdp } from './src/ununifi/tx/cdp/post_tx_nftmarket_msg_create_cdp';
 import { examplePostTxCdpMsgDeposit } from './src/ununifi/tx/cdp/post_tx_nftmarket_msg_deposit';
+import { getCdpInfo } from './src/ununifi/query/cdp/get_cdp';
 
 async function main() {
   // for nftmarket
@@ -21,6 +22,9 @@ async function main() {
 
   const createCdpResult = await examplePostTxCdpMsgCreateCdp()
   showResult(createCdpResult)
+
+  const getNodeInfoResult = await getCdpInfo()
+  showResult(getNodeInfoResult)
 
   const depositResult = await examplePostTxCdpMsgDeposit()
   showResult(depositResult)
