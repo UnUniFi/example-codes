@@ -70,7 +70,6 @@ export const postTxBankMsgSend = async () => {
     amount,
   });
 
-  console.log("🚀 ~ file: post_tx_bank_msg_send.ts ~ line 76 ~ postTxBankMsgSend ~ msgSend", msgSend)
   // build TxBody
   const txBody = new proto.cosmos.tx.v1beta1.TxBody({
     messages: [cosmosclient.codec.instanceToProtoAny(msgSend)],
