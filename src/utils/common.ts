@@ -15,7 +15,7 @@ export const signTx = (cosmosclient:any, sdk:any ,account:any, txBody:any) => {
       },
     ],
     fee: {
-      gas_limit: Long.fromString('200000'),
+      gas_limit: Long.fromString('300000'),
     },
   });
 
