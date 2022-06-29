@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --runInBand",
     "lint": "eslint .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "start": "ts-node ./main.ts"
   },
   "repository": {
     "type": "git",
