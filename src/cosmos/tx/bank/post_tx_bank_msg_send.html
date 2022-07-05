@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@cosmos-client/core@0.46.0-rc7/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ununifi-client@0.46.0-rc4/index.min.js"></script>
+  </head>
+  <body>
+    <input type="text" id="toAddress" placeholder="toAddress" />
+    <input type="text" id="amount" placeholder="amount" value="10" />
+    <input type="text" id="denom" placeholder="denom" value="uguu" />
+    <button id="post_tx_bank_msg_send" onclick="onClickPostTxBankMsgSend()">Post tx bank msg send</button>
+    <script src="./post_tx_bank_msg_send.js"></script>
+  </body>
+</html>
