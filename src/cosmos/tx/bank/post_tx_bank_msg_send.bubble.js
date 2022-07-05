@@ -1,3 +1,4 @@
+/* eslint-disable */
 function(properties, context) {
   //Define functions
   function createBech32PrefixConfig(properties) {

@@ -1,2 +1,4 @@
 .history/
 .eslintrc.*
+*.bubble.*
+*.browser.*

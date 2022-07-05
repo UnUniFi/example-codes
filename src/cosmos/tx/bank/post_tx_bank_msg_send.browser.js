@@ -1,3 +1,4 @@
+/* eslint-disable */
 const properties = {};
 // Note: These value should be set by plugin or app developer.
 properties.chainId = 'ununifi-alpha-test-v2';
