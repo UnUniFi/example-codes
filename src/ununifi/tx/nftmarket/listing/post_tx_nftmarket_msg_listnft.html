@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@cosmos-client/core@0.46.0-rc7/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ununifi-client@0.46.0-rc4/index.min.js"></script>
+  </head>
+  <body>
+    <input type="text" id="nft_id" placeholder="NFT ID" value="a10" />
+    <input type="text" id="min_bid" placeholder="min bid amount" value="1" />
+    <input type="text" id="bid_token" placeholder="bid token denom" value="uguu" />
+    <label for="auto">Auto payment</label>
+    <button id="post_tx_nftmarket_msg_listnft" onclick="onClickPostTxNftMsgListNft()">Post tx bank msg send</button>
+    <script src="./post_tx_nftmarket_msg_listnft.browser.js"></script>
+  </body>
+</html>
