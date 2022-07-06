@@ -1,49 +1,5 @@
 /* eslint-disable */
-const properties = {};
-// Note: These value should be set by plugin or app developer.
-properties.chainId = 'ununifi-alpha-test-v2';
-properties.chainName = 'UnUniFi (alpha-test)';
-properties.bech32Prefix = 'ununifi';
-properties.coinType = 118;
-properties.gasPriceStepLow = 0;
-properties.gasPriceStepAverage = 0.01;
-properties.gasPriceStepHigh = 0.03;
-properties.coinDenom = 'GUU';
-properties.coinMinimalDenom = 'uguu';
-properties.coinDecimals = 6;
-properties.coinGeckoId = 'ununifi';
-properties.rest = 'http://ununifi-alpha-test-v2.cauchye.net:1317';
-properties.websocket = 'ws://ununifi-alpha-test-v2.cauchye.net:26657';
-
-// Note: These example values should be set from form input.
-// properties.toAddress = 'ununifi18y5nnx3r9s4w398sn0nqcykh2y7sx8ljd423t6';
-// properties.denom = 'uguu';
-// properties.amount = '10';
-
-// Note: This function emulate Bubble specific context.async. But I guess you can improve more.
-function callback(arg1, arg2) {
-  console.log(arg1);
-  console.log(arg2);
-  if (arg2) {
-    return arg2;
-  }
-  return;
-}
-
-// Note: This object and function emulate Bubble specific context.async. But I guess you can improve more.
-const context = {};
-context.async = async function (fn) {
-  const callbackResult = await fn(callback);
-  console.log(callbackResult);
-  return callbackResult;
-};
-
-// Note: You could be written more reasonably, depending on the definition of context.async
-// Note: After copying to Bubble, you need to delete the following points.
-// Note: 1. You need to remove main function's async and function name.
-// Note: 2. You need to remove async just before `context.async`.
-// Note: 3. You need to remove return just before `callback(null, null or hoge)`.
-async function post_tx_nftmarket_msg_listnft(properties, context) {
+function(properties, context) {
   //Define functions
   function createBech32PrefixConfig(properties) {
     return {
@@ -124,21 +80,17 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
   cosmosclient.config.setBech32Prefix(bech32Config);
 
   //Suggest chain to Keplr
-  await context.async(async (callback) => {
-    if (!window.keplr) {
-      alert('Please install keplr extension');
-      return;
-    }
+  context.async(async (callback) => {
     await window.keplr.enable(properties.chainId);
     await window.keplr.experimentalSuggestChain(chainInfo);
-    return callback(null, null);
+    callback(null, null);
   });
 
   //Get account info from Keplr
-  const keyFromKeplr = await context.async(async (callback) => {
+  const keyFromKeplr = context.async(async (callback) => {
     await window.keplr.enable(properties.chainId);
     const publicKeyFromKeplr = await window.keplr.getKey(properties.chainId);
-    return callback(null, publicKeyFromKeplr);
+    callback(null, publicKeyFromKeplr);
   });
   const publicKeyFromKeplr = keyFromKeplr.pubKey;
   console.log(publicKeyFromKeplr);
@@ -155,7 +107,7 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
   });
 
   //Do the operation
-  const account = await context.async(async (callback) => {
+  const account = context.async(async (callback) => {
     const account = await cosmosclient.rest.auth
       .account(sdk.rest, fromAddress)
       .then((res) => cosmosclient.codec.protoJSONToInstance(cosmosclient.codec.castProtoJSONOfProtoAny(res.data.account)))
@@ -163,11 +115,11 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
 
     if (!(account instanceof cosmosclient.proto.cosmos.auth.v1beta1.BaseAccount)) {
       console.log(account);
-      return callback(null, null);
+      callback(null, null);
     }
 
     console.log(account);
-    return callback(null, account);
+    callback(null, account);
   });
 
   const msg = new ununificlient.proto.ununifi.nftmarket.MsgListNft({
@@ -176,15 +128,15 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
       class_id: properties.classId,
       nft_id: properties.nftId,
     },
-    listing_type: 0,
+    listing_type: properties.listingType,
     bid_token: properties.bidToken,
     min_bid: properties.minBid,
     bid_active_rank: Long.fromString(properties.bidActiveRank),
   });
 
+
   const txBody = new cosmosclient.proto.cosmos.tx.v1beta1.TxBody({
     messages: [cosmosclient.codec.instanceToProtoAny(msg)],
-    memo: '',
   });
 
   const authInfo = new cosmosclient.proto.cosmos.tx.v1beta1.AuthInfo({
@@ -208,12 +160,11 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
 
   const signDoc = txBuilder.signDoc(account.account_number);
 
-  // signWithKeplr
   const bodyBytes = signDoc.body_bytes;
   const authInfoBytes = signDoc.auth_info_bytes;
   const accountNumber = account.account_number;
 
-  const directSignResponse = await context.async(async (callback) => {
+  const directSignResponse = context.async(async (callback) => {
     await window.keplr.enable(properties.chainId);
     const directSignResponse = await window.keplr.signDirect(properties.chainId, fromAddress, {
       bodyBytes,
@@ -221,14 +172,14 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
       chainId: properties.chainId,
       accountNumber,
     });
-    return callback(null, directSignResponse);
+    callback(null, directSignResponse);
   });
 
   txBuilder.txRaw.auth_info_bytes = directSignResponse.signed.authInfoBytes;
   txBuilder.txRaw.body_bytes = directSignResponse.signed.bodyBytes;
   txBuilder.addSignature(base64StringToUint8Array(directSignResponse.signature.signature));
 
-  const result = await context.async(async (callback) => {
+  const result = context.async(async (callback) => {
     try {
       const result = await cosmosclient.rest.tx.broadcastTx(sdk.rest, {
         tx_bytes: txBuilder.txBytes(),
@@ -241,20 +192,10 @@ async function post_tx_nftmarket_msg_listnft(properties, context) {
 
       const ret = result.data;
 
-      return callback(null, ret);
+      callback(null, ret);
     } catch (err) {
-      return callback(err);
+      callback(err);
     }
   });
   console.log(result);
-}
-
-async function onClickPostTxNftMsgListNft() {
-  properties.nftId = document.getElementById('nft_id').value;
-  properties.classId = document.getElementById('nft_id').value;
-  // properties.listing_type = document.getElementById('listing_type').value;
-  properties.bidToken = document.getElementById('bid_token').value;
-  properties.minBid = document.getElementById('min_bid').value;
-  properties.bidActiveRank = document.getElementById('bid_active_rank').value;
-  await post_tx_nftmarket_msg_listnft(properties, context);
 }

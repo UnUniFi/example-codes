@@ -126,14 +126,14 @@ function(properties, context) {
   const msg = new ununificlient.proto.ununifi.nftmarket.MsgPlaceBid({
     sender: fromAddress.toString(),
     nft_id: {
-      class_id: properties.class_id,
-      nft_id: properties.nft_id,
+      class_id: properties.classId,
+      nft_id: properties.nftId,
     },
     amount: {
       denom: properties.denom,
       amount: properties.amount,
     },
-    automatic_payment: properties.auto_payment,
+    automatic_payment: properties.autoPayment,
   });
 
 
