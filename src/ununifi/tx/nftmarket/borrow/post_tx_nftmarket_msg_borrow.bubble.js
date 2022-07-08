@@ -105,7 +105,6 @@ function(properties, context) {
   const pubKey = new cosmosclient.proto.cosmos.crypto.secp256k1.PubKey({
     key: fromPubKey,
   });
-  const toAddress = cosmosclient.AccAddress.fromString(properties.toAddress);
 
   //Do the operation
   const account = context.async(async (callback) => {
