@@ -1,5 +1,14 @@
 /**
+ * @typedef {import("./../types").Context} Context
+ * @typedef {import("./ununifi").UnUnifiInstance} UnUnifiInstance
+ * @typedef {import("./ununifi").UnUnifiFields} UnUnifiFields
+ */
+
+/**
  * initialize
+ * 
+ * @param {UnUnifiInstance} instance
+ * @param {Context} context
  */
 function(instance, context) {
   instance.data.toHexString = (bytes) => {
@@ -29,6 +38,10 @@ function(instance, context) {
 
 /**
  * update
+ * 
+ * @param {UnUnifiInstance} instance
+ * @param {UnUnifiFields} properties
+ * @param {Context} context
  */
 function(instance, properties, context) {
   instance.data.bech32Prefix = properties.bech32_prefix;
