@@ -19,7 +19,7 @@ export type Data = {
   toHexString: (value: any) => string;
   fromHexString: (value: string) => any;
   chainId: string;
-  chainInfo: string;
+  chainInfo: any;
   address?: string;
 };
 

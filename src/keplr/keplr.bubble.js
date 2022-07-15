@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * @typedef {import("./../types").Context} Context
  * @typedef {import("./keplr").Instance} Instance
