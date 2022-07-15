@@ -1,5 +1,16 @@
 /**
- * login
+ * @typedef {import("./../types").Context} Context
+ * @typedef {import("./keplr").Instance} Instance
+ * @typedef {import("./keplr").Data} Data
+ * @typedef {import("./keplr").LoginFields} LoginFields
+ */
+
+/**
+ * sign
+ * 
+ * @param {Instance} instance
+ * @param {LoginFields} properties
+ * @param {Context} context
  */
 function(instance, properties, context) {
   const { toHexString } = instance.data;

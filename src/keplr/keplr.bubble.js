@@ -1,11 +1,21 @@
-/** 
- * initialize 
+/**
+ * @typedef {import("./../types").Context} Context
+ * @typedef {import("./keplr").Instance} Instance
+ * @typedef {import("./keplr").Data} Data
+ * @typedef {import("./keplr").Fields} Fields
+ */
+
+/**
+ * initialize
+ * 
+ * @param {Instance} instance
+ * @param {Context} context
  */
 function(instance, context) {
-  console.log("init");
+  console.log('init');
 
   instance.data.toHexString = (bytes) => {
-    return bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
+    return bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
   };
 
   instance.data.fromHexString = (hexString) => {
@@ -15,13 +25,17 @@ function(instance, context) {
 
 /**
  * update
+ * 
+ * @param {Instance} instance
+ * @param {Fields} properties
+ * @param {Context} context
  */
 function(instance, properties, context) {
-  console.log("update");
+  console.log('update');
 
   instance.data.chainId = properties.chain_id;
   instance.data.chainInfo = createChainInfo(properties);
-  instance.publishState("chain_id", properties.chain_id);
+  instance.publishState('chain_id', properties.chain_id);
 
   function createChainInfo(properties) {
     return {
@@ -48,11 +62,11 @@ function(instance, properties, context) {
   function createBech32PrefixConfig(properties) {
     return {
       bech32PrefixAccAddr: properties.bech32_prefix,
-      bech32PrefixAccPub: properties.bech32_prefix + "pub",
-      bech32PrefixValAddr: properties.bech32_prefix + "valoper",
-      bech32PrefixValPub: properties.bech32_prefix + "valoperpub",
-      bech32PrefixConsAddr: properties.bech32_prefix + "valcons",
-      bech32PrefixConsPub: properties.bech32_prefix + "valconspub",
+      bech32PrefixAccPub: properties.bech32_prefix + 'pub',
+      bech32PrefixValAddr: properties.bech32_prefix + 'valoper',
+      bech32PrefixValPub: properties.bech32_prefix + 'valoperpub',
+      bech32PrefixConsAddr: properties.bech32_prefix + 'valcons',
+      bech32PrefixConsPub: properties.bech32_prefix + 'valconspub',
     };
   }
 
