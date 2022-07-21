@@ -2,7 +2,7 @@ import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import Long from 'long';
 import { convertUnknownAccountToBaseAccount } from '../../../utils/account/convertUnknownAccountToBaseAccount';
 
-export const postTxBankMsgSend = async () => {
+export const postTxStakingMsgDelegate = async () => {
   // set bech32prefix to client
   const bech32Prefix = 'ununifi';
   const accAddr = bech32Prefix;
@@ -56,24 +56,22 @@ export const postTxBankMsgSend = async () => {
   }
   const sequence = baseAccount.sequence;
 
-  // build MsgSend
-  const recipientAccAddressString = 'ununifi18y5nnx3r9s4w398sn0nqcykh2y7sx8ljd423t6';
-  const amount: proto.cosmos.base.v1beta1.ICoin[] = [
-    {
-      denom: 'uguu',
-      amount: '1',
-    },
-  ];
-  const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
-    from_address: senderAccAddressString,
-    to_address: recipientAccAddressString,
-    amount,
+  // build MsgDelegate
+  const validatorValAddressString = 'ununifivaloper1w4ujg5n5n3l3q054hahz22q3ls9zy38n23z28s';
+  const amount: proto.cosmos.base.v1beta1.ICoin = {
+    denom: 'uguu',
+    amount: '1',
+  };
+  const msgDelegate = new proto.cosmos.staking.v1beta1.MsgDelegate({
+    delegator_address: senderAccAddressString,
+    validator_address: validatorValAddressString,
+    amount: amount,
   });
 
   // build TxBody
   const memo = 'UnUniFi/example-codes';
   const txBody = new proto.cosmos.tx.v1beta1.TxBody({
-    messages: [cosmosclient.codec.instanceToProtoAny(msgSend)],
+    messages: [cosmosclient.codec.instanceToProtoAny(msgDelegate)],
     memo,
   });
 
