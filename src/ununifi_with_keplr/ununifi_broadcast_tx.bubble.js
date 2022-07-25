@@ -19,6 +19,7 @@ function(instance, properties, context) {
         console.error(result.data.tx_response?.raw_log);
       }
       const ret = result.data;
+      instance.data.msgs = [];
 
       return callback(null, ret);
     } catch (err) {
