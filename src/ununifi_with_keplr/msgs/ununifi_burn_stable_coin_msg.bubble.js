@@ -7,5 +7,5 @@ function(instance, properties, context) {
     sender: account.address,
   });
 
-  instance.data.msgs = [msg];
+  instance.data.msgs.push(msg);
 }

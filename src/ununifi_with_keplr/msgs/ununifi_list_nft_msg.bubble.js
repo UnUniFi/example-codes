@@ -22,5 +22,5 @@ function(instance, properties, context) {
     bid_active_rank: Long.fromString(bidActiveRank),
   });
 
-  instance.data.msgs = [msg];
+  instance.data.msgs.push(msg);
 }

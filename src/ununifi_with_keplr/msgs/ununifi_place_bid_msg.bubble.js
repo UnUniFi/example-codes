@@ -22,5 +22,5 @@ function(instance, properties, context) {
     automatic_payment: autoPayment,
   });
 
-  instance.data.msgs = [msg];
+  instance.data.msgs.push(msg);
 }

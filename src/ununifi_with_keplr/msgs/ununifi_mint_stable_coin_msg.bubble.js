@@ -20,5 +20,5 @@ function(instance, properties, context) {
     },
   });
 
-  instance.data.msgs = [msg];
+  instance.data.msgs.push(msg);
 }
