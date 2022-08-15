@@ -1,6 +1,7 @@
 import { postTxBankMsgSend } from './post_tx_bank_msg_send';
 
 describe('post_tx_bank_msg_send', () => {
+  // TODO: mock response
   it('should return successful tx response', async () => {
     expect.hasAssertions();
     const txResponse = await postTxBankMsgSend();
@@ -8,5 +9,5 @@ describe('post_tx_bank_msg_send', () => {
     expect(txResponse.status).toBe(200);
     expect(txResponse.statusText).toBe('OK');
     expect(txResponse.data.tx_response?.code).toBe(0);
-  });
+  }, 10000);
 });
