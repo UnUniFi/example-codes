@@ -4,10 +4,10 @@ function(instance, properties, context) {
   const name = properties.name;
   const baseTokenUri = properties.base_token_uri;
   const tokenSupplyCap = properties.token_supply_cap;
-  const mintingPermission = properties.mintingPermission;
+  const mintingPermission = properties.minting_permission;
   const symbol = properties.symbol;
   const description = properties.description;
-  const classUrl = properties.class_url;
+  const classUri = properties.class_uri;
 
   const account = fetchAccount(sdk, currentAddressString);
 
@@ -19,7 +19,7 @@ function(instance, properties, context) {
     minting_permission: mintingPermission,
     symbol: symbol,
     description: description,
-    class_url: classUrl,
+    class_url: classUri,
   });
 
   instance.data.msgs.push(msg);
