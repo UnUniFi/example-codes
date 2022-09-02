@@ -195,14 +195,14 @@ function(instance, properties, context) {
     };
   }
 
-  function createBech32PrefixConfig(bech32Prefix) {
+  function createBech32PrefixConfig(properties) {
     return {
-      accAddr: bech32Prefix,
-      accPub: bech32Prefix + 'pub',
-      valAddr: bech32Prefix + 'valoper',
-      valPub: bech32Prefix + 'valoperpub',
-      consAddr: bech32Prefix + 'valcons',
-      consPub: bech32Prefix + 'valconspub',
+      bech32PrefixAccAddr: properties.bech32_prefix,
+      bech32PrefixAccPub: properties.bech32_prefix + "pub",
+      bech32PrefixValAddr: properties.bech32_prefix + "valoper",
+      bech32PrefixValPub: properties.bech32_prefix + "valoperpub",
+      bech32PrefixConsAddr: properties.bech32_prefix + "valcons",
+      bech32PrefixConsPub: properties.bech32_prefix + "valconspub",
     };
   }
 
