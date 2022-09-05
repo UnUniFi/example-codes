@@ -19,7 +19,7 @@ function(instance, properties, context) {
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
     instance.triggerEvent('base_token_uri_updated');
-    console.log('txHash :' + txHash);
+    console.log('txHash : ' + txHash);
   };
   updateBaseTokenUri();
 }

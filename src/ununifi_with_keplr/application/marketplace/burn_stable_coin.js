@@ -14,7 +14,7 @@ function(instance, properties, context) {
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
     instance.triggerEvent('stable_coin_burned');
-    console.log('txHash :' + txHash);
+    console.log('txHash : ' + txHash);
   };
   burnStableCoin();
 }

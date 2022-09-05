@@ -29,7 +29,7 @@ function(instance, properties, context) {
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
     instance.triggerEvent('nft_listed');
-    console.log('txHash :' + txHash);
+    console.log('txHash : ' + txHash);
   };
   listNft();
 }

@@ -21,7 +21,7 @@ function(instance, properties, context) {
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
     instance.triggerEvent('liquidated');
-    console.log('txHash :' + txHash);
+    console.log('txHash : ' + txHash);
   };
   liquidate();
 }
