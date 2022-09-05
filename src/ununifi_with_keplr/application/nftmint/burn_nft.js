@@ -3,22 +3,23 @@ function(instance, properties, context) {
   const chainId = instance.data.chainId;
 
   const classId = properties.class_id;
-  const tokenSupplyCap = properties.token_supply_cap;
+  const nftId = properties.nft_id;
 
-  const updateTokenSupplyCap = async () => {
+  const burnNft = async () => {
     await loginWithKeplr(chainId);
     const account = await fetchAccount(sdk, currentAddressString);
-    const msg = new ununificlient.proto.ununifi.nftmint.MsgUpdateTokenSupplyCap({
+    const msg = new ununificlient.proto.ununifi.nftmint.MsgBurnNFT({
       sender: account.address,
       class_id: classId,
-      token_supply_cap: Long.fromString(tokenSupplyCap),
+      nft_id: nftId,
     });
 
     const txBuilder = createTx(sdk, [msg], account);
     const signedTxBuilder = await signWithKeplr(chainId, account, txBuilder);
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
-    instance.triggerEvent('token_supply_cap_updated');
+    instance.triggerEvent('nft_burned');
+    console.log('txHash :' + txHash);
   };
-  updateTokenSupplyCap();
+  burnNft();
 }

@@ -3,22 +3,25 @@ function(instance, properties, context) {
   const chainId = instance.data.chainId;
 
   const classId = properties.class_id;
-  const baseTokenUri = properties.base_token_uri;
+  const nftId = properties.nft_id;
+  const recipient = properties.recipient;
 
-  const updateBaseTokenUri = async () => {
+  const mintNft = async () => {
     await loginWithKeplr(chainId);
     const account = await fetchAccount(sdk, currentAddressString);
-    const msg = new ununificlient.proto.ununifi.nftmint.MsgUpdateBaseTokenUri({
+    const msg = new ununificlient.proto.ununifi.nftmint.MsgMintNFT({
       sender: account.address,
       class_id: classId,
-      base_token_uri: baseTokenUri,
+      nft_id: nftId,
+      recipient: recipient,
     });
 
     const txBuilder = createTx(sdk, [msg], account);
     const signedTxBuilder = await signWithKeplr(chainId, account, txBuilder);
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
-    instance.triggerEvent('base_token_uri_updated');
+    instance.triggerEvent('nft_minted');
+    console.log('txHash :' + txHash);
   };
-  updateBaseTokenUri();
+  mintNft();
 }

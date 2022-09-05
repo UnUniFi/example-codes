@@ -29,6 +29,7 @@ function(instance, properties, context) {
     const txHash = await broadcastTx(sdk, signedTxBuilder);
     instance.publishState('tx_hash', txHash);
     instance.triggerEvent('class_created');
+    console.log('txHash :' + txHash);
   };
   createClass();
 }
