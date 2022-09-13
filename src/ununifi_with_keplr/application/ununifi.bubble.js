@@ -156,7 +156,7 @@ function(instance, context) {
 /**
  * update
  */
- function(instance, properties, context) {
+function(instance, properties, context) {
   instance.data.chainId = properties.chain_id;
   instance.data.chainInfo = createChainInfo(properties);
   instance.data.bech32Prefix = properties.bech32_prefix;
@@ -166,7 +166,7 @@ function(instance, context) {
   const websocket = properties.websocket;
   const bech32Prefix = properties.bech32_prefix;
 
-  cosmosclient.config.setBech32Prefix(createBech32PrefixConfig(bech32Prefix));
+  cosmosclient.config.setBech32Prefix(createBech32Prefix(bech32Prefix));
 
   instance.data.sdk = createSdk(chainId, rest, websocket);
 
@@ -182,7 +182,7 @@ function(instance, context) {
       bip44: {
         coinType: properties.coin_type,
       },
-      bech32Config: createBech32PrefixConfig(properties),
+      bech32Config: createBech32Config(properties),
       currencies: createCurrencies(properties),
       feeCurrencies: createCurrencies(properties),
       stakeCurrency: createCurrencies(properties)[0],
@@ -195,7 +195,7 @@ function(instance, context) {
     };
   }
 
-  function createBech32PrefixConfig(bech32Prefix) {
+  function createBech32Prefix(bech32Prefix) {
     return {
       accAddr: bech32Prefix,
       accPub: bech32Prefix + 'pub',
@@ -203,6 +203,17 @@ function(instance, context) {
       valPub: bech32Prefix + 'valoperpub',
       consAddr: bech32Prefix + 'valcons',
       consPub: bech32Prefix + 'valconspub',
+    };
+  }
+
+  function createBech32Config(properties) {
+    return {
+      bech32PrefixAccAddr: properties.bech32_prefix,
+      bech32PrefixAccPub: properties.bech32_prefix + "pub",
+      bech32PrefixValAddr: properties.bech32_prefix + "valoper",
+      bech32PrefixValPub: properties.bech32_prefix + "valoperpub",
+      bech32PrefixConsAddr: properties.bech32_prefix + "valcons",
+      bech32PrefixConsPub: properties.bech32_prefix + "valconspub",
     };
   }
 
