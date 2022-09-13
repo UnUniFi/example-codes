@@ -1,4 +1,4 @@
-function a(instance, properties, context) {
+function(instance, properties, context) {
   const { sdk, currentAddressString, fetchAccount, createTx, loginWithKeplr, signWithKeplr, broadcastTx } = instance.data;
   const chainId = instance.data.chainId;
 
