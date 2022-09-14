@@ -5,8 +5,11 @@ function(instance, properties, context) {
   const withdrawValidatorCommission = async () => {
     await loginWithKeplr(chainId);
     const account = await fetchAccount(sdk, currentAddressString);
+    const accAddress = cosmosclient.AccAddress.fromString(account.address);
+    const validatorAddress = accAddress.toValAddress().toString();
+
     const msg = new cosmosclient.proto.cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission({
-      validator_address: account.address,
+      validator_address: validatorAddress,
     });
 
     const txBuilder = createTx(sdk, [msg], account);
