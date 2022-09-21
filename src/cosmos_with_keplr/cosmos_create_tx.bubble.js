@@ -14,7 +14,7 @@ function(instance, properties, context) {
 
         instance.publishState("body_hex", toHexString(signDoc.body_bytes));
         instance.publishState("auth_info_hex", toHexString(signDoc.auth_info_bytes));
-        instance.publishState("account_long_str", account.account_number.toString());
+        instance.publishState("account_number_str", account.account_number.toString());
         instance.triggerEvent("tx_created");
         console.log('tx created')
     });
