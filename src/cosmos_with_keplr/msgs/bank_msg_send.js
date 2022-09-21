@@ -11,6 +11,6 @@ function(instance, properties, context) {
         amount: [{ denom: denom, amount: amount }],
     });
 
-    instance.data.msgs.push(msg);
+    instance.data.msgs = [msg];
     instance.triggerEvent('msg_send_created');
 }
