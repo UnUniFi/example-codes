@@ -5,7 +5,7 @@ function(instance, properties, context) {
     const amount = properties.amount;
     const denom = properties.denom;
 
-    const msg = new cosmosclient.proto.cosmos.gov.v1beta1.MsgDeposit({
+    const msg = new cosmosclient.proto.cosmos.gov.v1.MsgDeposit({
         proposal_id: Long.fromNumber(proposalID),
         depositor: currentAddressString,
         amount: [{ denom: denom, amount: amount }],

@@ -9,7 +9,7 @@ function(instance, properties, context) {
   const deposit = async () => {
     await loginWithKeplr(chainId);
     const account = await fetchAccount(sdk, currentAddressString);
-    const msg = new cosmosclient.proto.cosmos.gov.v1beta1.MsgDeposit({
+    const msg = new cosmosclient.proto.cosmos.gov.v1.MsgDeposit({
       proposal_id: Long.fromNumber(proposalID),
       depositor: account.address,
       amount: [{ denom: denom, amount: amount }],
