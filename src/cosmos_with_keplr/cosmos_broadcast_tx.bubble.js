@@ -23,11 +23,11 @@ function(instance, properties, context) {
         } catch (err) {
             throw err;
         } finally {
-            console.log('bradcasted!')
+            console.log('bradcasted!');
             instance.data.msgs = [];
             instance.publishState("body_hex", "");
             instance.publishState("auth_info_hex", "");
-            instance.publishState("account_long_str", "");
+            instance.publishState("account_number_str", "");
             instance.triggerEvent("broadcasted");
         }
     };
