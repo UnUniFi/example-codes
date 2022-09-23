@@ -24,12 +24,11 @@ function(instance, context) {
       throw new Error('it is not BaseAccount instance');
     }
 
-    if(!account.pub_key){
+    if (!account.pub_key) {
       console.log("get pubkey from keplr")
-      const pubkey =  mergedKey;
       account.pub_key = {
-        type_url:"/cosmos.crypto.secp256k1.PubKey",
-        value:instance.data.fromHexString(instance.data.publicKeyHexString)
+        type_url: "/cosmos.crypto.secp256k1.PubKey",
+        value: instance.data.fromHexString(instance.data.publicKeyHexString)
       }
     }
 
@@ -117,14 +116,16 @@ function(instance, context) {
     }
     const key = await keplr.getKey(chainId);
     instance.data.currentAddressString = key.bech32Address;
-    const appendKey= new Uint16Array([10, 33]);
+    const appendKey = new Uint16Array([10, 33]);
     const mergedKey = new Uint8Array(appendKey.length + key.pubKey.length);
-	  mergedKey.set(appendKey);
-	  mergedKey.set(key.pubKey, appendKey.length);
-    instance.data.publicKeyHexString = instance.data.toHexString(mergedKey)
+    mergedKey.set(appendKey);
+    mergedKey.set(key.pubKey, appendKey.length);
+    instance.data.publicKeyHexString = instance.data.toHexString(mergedKey);
 
     localStorage.setItem('ununifiAddress', key.bech32Address);
     localStorage.setItem('ununifiPubkey', instance.data.toHexString(mergedKey));
+    instance.publishState('address', key.bech32Address);
+    instance.publishState('public_key', instance.data.toHexString(mergedKey));
   }
 
   instance.data.signWithKeplr = async (chainId, account, txBuilder) => {
