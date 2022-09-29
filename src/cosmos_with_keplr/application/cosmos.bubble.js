@@ -26,7 +26,6 @@ function(instance, context) {
 
     if (!account.pub_key) {
       console.log("get pubkey from keplr")
-      const pubkey = mergedKey;
       account.pub_key = {
         type_url: "/cosmos.crypto.secp256k1.PubKey",
         value: instance.data.fromHexString(instance.data.publicKeyHexString)
@@ -96,8 +95,9 @@ function(instance, context) {
       });
 
       if (result.data.tx_response?.code !== 0) {
-        console.error(result.data.tx_response?.raw_log);
+        throw Error(result.data.tx_response?.raw_log);
       }
+      console.log("result",result.data.tx_response);
       return result.data.tx_response.txhash;
     } catch (err) {
       throw err;
