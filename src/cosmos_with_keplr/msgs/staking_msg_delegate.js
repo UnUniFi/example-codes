@@ -12,5 +12,8 @@ function(instance, properties, context) {
     });
 
     instance.data.msgs = [msg];
+    const msgAny = cosmosclient.codec.instanceToProtoAny(msg);
+    instance.publishState('msg_delegate_type_url', msgAny.type_url);
+    instance.publishState('msg_delegate_value', toHexString(msgAny.value));
     instance.triggerEvent('msg_delegate_created');
 }

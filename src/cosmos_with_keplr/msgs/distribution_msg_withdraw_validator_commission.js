@@ -8,6 +8,9 @@ function(instance, properties, context) {
       validator_address: validatorAddress,
     });
 
-    instance.data.msgs = [msg];
-    instance.triggerEvent('msg_withdraw_validator_commission_created');
+  instance.data.msgs = [msg];
+  const msgAny = cosmosclient.codec.instanceToProtoAny(msg);
+  instance.publishState('msg_withdraw_validator_commission_type_url', msgAny.type_url);
+  instance.publishState('msg_withdraw_validator_commission_value', toHexString(msgAny.value));
+  instance.triggerEvent('msg_withdraw_validator_commission_created');
 }

@@ -14,5 +14,8 @@ function(instance, properties, context) {
     });
 
     instance.data.msgs = [msg];
+    const msgAny = cosmosclient.codec.instanceToProtoAny(msg);
+    instance.publishState('msg_begin_redelegate_type_url', msgAny.type_url);
+    instance.publishState('msg_begin_redelegate_value', toHexString(msgAny.value));
     instance.triggerEvent('msg_begin_redelegate_created');
 }
