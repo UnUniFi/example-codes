@@ -1,5 +1,5 @@
 function(instance, properties, context) {
-    const { currentAddressString } = instance.data;
+    const { currentAddressString, toHexString } = instance.data;
 
     const proposalID = properties.proposal_id;
     const voteOptionNum = properties.vote_option;

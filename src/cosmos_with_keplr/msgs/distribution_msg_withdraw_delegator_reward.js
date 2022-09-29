@@ -1,5 +1,5 @@
 function(instance, properties, context) {
-    const { currentAddressString } = instance.data;
+    const { currentAddressString, toHexString } = instance.data;
 
     const validatorAddress = properties.validator_address;
 

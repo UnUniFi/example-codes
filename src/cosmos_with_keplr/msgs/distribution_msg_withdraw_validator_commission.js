@@ -1,5 +1,5 @@
 function(instance, properties, context) {
-    const { currentAddressString } = instance.data;
+  const { currentAddressString, toHexString } = instance.data;
 
     const accAddress = cosmosclient.AccAddress.fromString(currentAddressString);
     const validatorAddress = accAddress.toValAddress().toString();
