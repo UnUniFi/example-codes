@@ -95,7 +95,7 @@ function(instance, context) {
       });
 
       if (result.data.tx_response?.code !== 0) {
-        console.error(result.data.tx_response?.raw_log);
+        throw Error(result.data.tx_response?.raw_log);
       }
       console.log("result",result.data.tx_response);
       return result.data.tx_response.txhash;
