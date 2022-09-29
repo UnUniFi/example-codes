@@ -32,7 +32,7 @@ function(instance, properties, context) {
       instance.triggerEvent('class_created');
       console.log('txHash : ' + txHash);
     } catch (error) {
-      instance.publishState('error', error);
+      instance.publishState('error', error.toString());
       instance.triggerEvent('error');
       
     }
