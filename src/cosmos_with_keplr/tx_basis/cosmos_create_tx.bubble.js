@@ -1,23 +1,28 @@
 function(instance, properties, context) {
     const { toHexString, fetchAccount, currentAddressString, sdk, msgs } = instance.data;
 
-    fetchAccount(sdk, currentAddressString).then((account) => {
-        console.log(msgs)
-        const txBody = createTxBody(msgs);
-        const authInfo = createAuthInfo(account);
-        const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-        const signDoc = txBuilder.signDoc(account.account_number);
+    try {
+        fetchAccount(sdk, currentAddressString).then((account) => {
+            console.log(msgs)
+            const txBody = createTxBody(msgs);
+            const authInfo = createAuthInfo(account);
+            const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
+            const signDoc = txBuilder.signDoc(account.account_number);
 
-        instance.data.txBuilder = txBuilder;
+            instance.data.txBuilder = txBuilder;
 
-        console.log({ account });
+            console.log({ account });
 
-        instance.publishState("body_hex", toHexString(signDoc.body_bytes));
-        instance.publishState("auth_info_hex", toHexString(signDoc.auth_info_bytes));
-        instance.publishState("account_number_str", account.account_number.toString());
-        instance.triggerEvent("tx_created");
-        console.log('tx created')
-    });
+            instance.publishState("body_hex", toHexString(signDoc.body_bytes));
+            instance.publishState("auth_info_hex", toHexString(signDoc.auth_info_bytes));
+            instance.publishState("account_number_str", account.account_number.toString());
+            instance.triggerEvent("tx_created");
+            console.log('tx created')
+        });
+    } catch (error) {
+        instance.publishState("error", error.toString());
+        instance.triggerEvent("error");
+    }
 
     //
     // subroutine
