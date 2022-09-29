@@ -16,14 +16,15 @@ function(instance, properties, context) {
             });
 
             if (result.data.tx_response?.code !== 0) {
-                console.error(result.data.tx_response?.raw_log);
+                throw Error(result.data.tx_response?.raw_log);
             }
             const ret = result.data;
             instance.publishState("tx_hash", ret.tx_response.txhash);
-        } catch (err) {
-            throw err;
+        } catch (error) {
+            instance.publishState("error", ret.tx_response?.raw_log.toString());
+            instance.triggerEvent("error");
         } finally {
-            console.log('bradcasted!');
+            console.log('broadcasted!');
             instance.data.msgs = [];
             instance.publishState("body_hex", "");
             instance.publishState("auth_info_hex", "");

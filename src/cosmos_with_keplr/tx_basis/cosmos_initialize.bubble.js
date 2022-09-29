@@ -15,8 +15,8 @@ function(instance, context) {
             .then((res) => cosmosclient.codec.protoJSONToInstance(cosmosclient.codec.castProtoJSONOfProtoAny(res.data.account)))
             .catch((error) => {
                 console.log(error);
-                alert('Auth error occurred. Please check that your account has a balance.');
-                instance.triggerEvent('auth_error');
+                instance.publishState("error", error);
+                instance.triggerEvent("error");
             })
         if (!(account instanceof cosmosclient.proto.cosmos.auth.v1beta1.BaseAccount)) {
             throw new Error('it is not BaseAccount instance');
