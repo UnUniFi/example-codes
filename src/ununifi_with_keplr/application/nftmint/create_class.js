@@ -11,25 +11,31 @@ function(instance, properties, context) {
   const classUrl = properties.class_url;
 
   const createClass = async () => {
-    await loginWithKeplr(chainId);
-    const account = await fetchAccount(sdk, currentAddressString);
-    const msg = new ununificlient.proto.ununifi.nftmint.MsgCreateClass({
-      sender: account.address,
-      name: name,
-      base_token_uri: baseTokenUri,
-      token_supply_cap: Long.fromString(tokenSupplyCap),
-      minting_permission: mintingPermission,
-      symbol: symbol,
-      description: description,
-      class_url: classUrl,
-    });
+    try {
+      await loginWithKeplr(chainId);
+      const account = await fetchAccount(sdk, currentAddressString);
+      const msg = new ununificlient.proto.ununifi.nftmint.MsgCreateClass({
+        sender: account.address,
+        name: name,
+        base_token_uri: baseTokenUri,
+        token_supply_cap: Long.fromString(tokenSupplyCap),
+        minting_permission: mintingPermission,
+        symbol: symbol,
+        description: description,
+        class_url: classUrl,
+      });
 
-    const txBuilder = createTx(sdk, [msg], account);
-    const signedTxBuilder = await signWithKeplr(chainId, account, txBuilder);
-    const txHash = await broadcastTx(sdk, signedTxBuilder);
-    instance.publishState('tx_hash', txHash);
-    instance.triggerEvent('class_created');
-    console.log('txHash : ' + txHash);
+      const txBuilder = createTx(sdk, [msg], account);
+      const signedTxBuilder = await signWithKeplr(chainId, account, txBuilder);
+      const txHash = await broadcastTx(sdk, signedTxBuilder);
+      instance.publishState('tx_hash', txHash);
+      instance.triggerEvent('class_created');
+      console.log('txHash : ' + txHash);
+    } catch (error) {
+      instance.publishState('error', error);
+      instance.triggerEvent('error');
+      
+    }
   };
   createClass();
 }
