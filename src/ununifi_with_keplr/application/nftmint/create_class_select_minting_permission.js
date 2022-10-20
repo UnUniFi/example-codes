@@ -5,10 +5,15 @@ function(instance, properties, context) {
   const name = properties.name;
   const baseTokenUri = properties.base_token_uri;
   const tokenSupplyCap = properties.token_supply_cap;
-  const mintingPermission = properties.minting_permission;
+  const selectMintingPermission = properties.minting_permission;
   const symbol = properties.symbol;
   const description = properties.description;
   const classUrl = properties.class_url;
+  const mintingPermissionList = {
+    "OnlyOwner":0,
+    "Anyone":1,
+  }
+  const mintingPermission = mintingPermissionList[selectMintingPermission]
 
   const createClass = async () => {
     try {
@@ -34,7 +39,6 @@ function(instance, properties, context) {
     } catch (error) {
       instance.publishState('error', error.toString());
       instance.triggerEvent('error');
-      
     }
   };
   createClass();
