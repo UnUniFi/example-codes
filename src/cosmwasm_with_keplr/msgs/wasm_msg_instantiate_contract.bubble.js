@@ -11,7 +11,7 @@ function(instance, properties, context) {
     const msg = new cosmwasmclient.proto.cosmwasm.wasm.v1.MsgInstantiateContract({
         sender: currentAddressString,
         admin: admin,
-        code_id: Long.fromNumber(codeId),
+        code_id: Long.fromString(codeId),
         label: label,
         msg: new TextEncoder().encode(initMsgStr),
         funds: [{ amount: amount, denom: denom }],

@@ -8,7 +8,7 @@ function(instance, properties, context) {
     const msg = new cosmwasmclient.proto.cosmwasm.wasm.v1.MsgExecuteContract({
         sender: currentAddressString,
         contract: contract,
-        code_id: Long.fromNumber(codeId),
+        code_id: Long.fromString(codeId),
         msg: new TextEncoder().encode(migrateMsgStr),
     });
 
