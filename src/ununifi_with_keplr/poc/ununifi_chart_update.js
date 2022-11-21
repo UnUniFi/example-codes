@@ -7,7 +7,7 @@ function(instance, properties, context) {
         else {
             var convertedColor = properties.legend_color;
         }
-        return convertedColor
+        return '#' + convertedColor
     }
 
     function generateRandomColor() {
@@ -37,15 +37,14 @@ function(instance, properties, context) {
         return value.trim() + properties.annotation_suffix;
     });
 
-    var myArray = labels.map(function (value, i) {
+    instance.data.myArray = labels.map(function (value, i) {
         if (properties.value_type == 'number') {
             return [value.trim(), arrayNumber[i], generateRandomColor(), arrayAnnotation[i]];
         } else {
             return [value.trim(), arrayDate[i], generateRandomColor(), arrayAnnotation[i]];
         }
     });
-    console.log(myArray)
-    console.log(colorConvert(properties.annotation_color))
+    var array = instance.data.newArray ? instance.data.newArray : instance.data.myArray;
 
     $(document).ready(function () {
         // Load the Visualization API and the corechart package.
@@ -64,27 +63,27 @@ function(instance, properties, context) {
             data.addColumn(properties.value_type, properties.value_legend);
             data.addColumn({ type: 'string', role: 'style' });
             data.addColumn({ type: 'string', role: 'annotation' });
-            data.addRows(myArray);
+            data.addRows(array.sort((x, y) => x[1] - y[1]));
 
             // Set chart options        
             var options = {
                 title: properties.title,
-                titleTextStyle: { color: '#' + colorConvert(properties.title_color), fontSize: properties.title_font_size, bold: properties.title_bold },
+                titleTextStyle: { color: colorConvert(properties.title_color), fontSize: properties.title_font_size, bold: properties.title_bold },
                 width: properties.width,
                 height: properties.height,
                 backgroundColor: 'none',
-                legend: { position: properties.legend_position, textStyle: { color: '#' + colorConvert(properties.legend_color), fontSize: properties.legend_font_size, bold: properties.legend_bold } },
-                vAxis: { title: properties.label_legend, titleTextStyle: { color: '#' + colorConvert(properties.vaxis_color), fontSize: properties.vaxis_font_size }, textStyle: { color: '#' + colorConvert(properties.vaxis_color) }, gridlines: { color: '#' + colorConvert(properties.vaxis_color) }, fontSize: properties.vaxis_font_size },
-                hAxis: { title: properties.value_legend, titleTextStyle: { color: '#' + colorConvert(properties.haxis_color), fontSize: properties.haxis_font_size }, textStyle: { color: '#' + colorConvert(properties.haxis_color) }, gridlines: { color: '#' + colorConvert(properties.haxis_color) }, fontSize: properties.haxis_font_size },
+                legend: { position: properties.legend_position, textStyle: { color: colorConvert(properties.legend_color), fontSize: properties.legend_font_size, bold: properties.legend_bold } },
+                vAxis: { title: properties.label_legend, titleTextStyle: { color: colorConvert(properties.vaxis_color), fontSize: properties.vaxis_font_size }, textStyle: { color: colorConvert(properties.vaxis_color) }, gridlines: { color: colorConvert(properties.vaxis_color) }, fontSize: properties.vaxis_font_size },
+                hAxis: { title: properties.value_legend, titleTextStyle: { color: colorConvert(properties.haxis_color), fontSize: properties.haxis_font_size }, textStyle: { color: colorConvert(properties.haxis_color) }, gridlines: { color: colorConvert(properties.haxis_color) }, fontSize: properties.haxis_font_size },
                 bar: { groupWidth: properties.bar_width + '%' },
                 annotations: {
                     alwaysOutside: true,
                     highContrast: false,
                     stem: {
-                        color: '#' + colorConvert(properties.annotation_stem_color), length: properties.annotation_stem_length
+                        color: colorConvert(properties.annotation_stem_color), length: properties.annotation_stem_length
                     },
                     textStyle: {
-                        fontSize: properties.annotation_font_size, bold: true, color: '#' + colorConvert(properties.annotation_color), opacity: 0.8
+                        fontSize: properties.annotation_font_size, bold: true, color: colorConvert(properties.annotation_color), opacity: 0.8
                     },
 
                 }
