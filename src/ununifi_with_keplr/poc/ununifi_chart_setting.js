@@ -27,7 +27,15 @@ function(instance, context) {
                 data.addColumn(instance.data.valueType, instance.data.valueLegend);
                 data.addColumn({ type: 'string', role: 'style' });
                 data.addColumn({ type: 'string', role: 'annotation' });
-                data.addRows(array.sort((x, y) => x[1] - y[1]));
+                if (instance.data.sortedBy == 'label') {
+                    data.addRows(array.sort((x, y) => Number(x[0]) - Number(y[0])));
+                } else if (instance.data.sortedBy == 'annotation') {
+                    data.addRows(array.sort((x, y) =>
+                        Number(x[3].replace(instance.data.annotationSuffix, '')) - Number(y[3].replace(instance.data.annotationSuffix, ''))
+                    ));
+                } else {
+                    data.addRows(array.sort((x, y) => x[1] - y[1]));
+                }
 
                 // Instantiate and draw our chart, passing in some options.
                 const chart = new google.visualization.BarChart(document.getElementById(chartID));

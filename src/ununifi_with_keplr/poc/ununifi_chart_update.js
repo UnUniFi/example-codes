@@ -69,6 +69,8 @@ function(instance, properties, context) {
     instance.data.labelLegend = properties.label_legend
     instance.data.valueType = properties.value_type
     instance.data.valueLegend = properties.value_legend
+    instance.data.sortedBy = properties.sorted_by
+    instance.data.annotationSuffix = properties.annotation_suffix
 
     instance.data.drawChart(instance.data.myArray)
 }
