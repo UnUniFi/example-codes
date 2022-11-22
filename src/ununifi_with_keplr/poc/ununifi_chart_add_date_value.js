@@ -16,6 +16,9 @@ function(instance, properties, context) {
     }
 
     // initialize
-    instance.data.newArray = instance.data.myArray
-    instance.data.newArray.push = [label.trim(), value, colorConvert(barColor), annotation]
+    let newArray = instance.data.myArray
+    console.log(label.trim(), value, colorConvert(barColor), annotation)
+    newArray[newArray.length] = [label.trim(), value, colorConvert(barColor), annotation + '%']
+    console.log(newArray)
+    instance.data.drawChart(newArray)
 }

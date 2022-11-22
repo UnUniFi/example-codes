@@ -1,53 +1,48 @@
 function(instance, properties, context) {
     function colorConvert(color) {
+        let convertedColor
         if (color.match("rgba")) {
-            var rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
-            var convertedColor = `${((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1)}`;
+            const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
+            convertedColor = `${((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1)}`;
         }
         else {
-            var convertedColor = properties.legend_color;
+            convertedColor = properties.legend_color;
         }
         return '#' + convertedColor
     }
 
     function generateRandomColor() {
-        var randomColor = 'color: #';
-        for (var i = 0; i < 6; i++) {
+        const randomColor = 'color: #';
+        for (const i = 0; i < 6; i++) {
             randomColor += (16 * Math.random() | 0).toString(16);
         }
         return randomColor
     }
 
-    var chartID = instance.data.id;
-    var div = $('<div id="' + chartID + '" style="width: ' + properties.bubble.width() + 'px; height:' + properties.bubble.height() + 'px;"></div>');
-    $(instance.canvas[0]).html(div);
-    var labels = properties.labels.split(',');
-    var values = properties.values.split(',');
-    var annotations = properties.annotations.split(',');
+    const labels = properties.labels.split(',');
+    const values = properties.values.split(',');
+    const annotations = properties.annotations.split(',');
 
-    var arrayNumber = values.map(function (value, i) {
-        return Number(value);
-    });
-
-    var arrayDate = values.map(function (value, i) {
-        return (new Date(Number(value)));
-    });
-
-    var arrayAnnotation = annotations.map(function (value, i) {
+    const arrayAnnotation = annotations.map(function (value, i) {
         return value.trim() + properties.annotation_suffix;
     });
 
     instance.data.myArray = labels.map(function (value, i) {
         if (properties.value_type == 'number') {
+            const arrayNumber = values.map(function (value, i) {
+                return Number(value);
+            });
             return [value.trim(), arrayNumber[i], colorConvert(properties.bar_color), arrayAnnotation[i]];
         } else {
+            const arrayDate = values.map(function (value, i) {
+                return (new Date(Number(value)));
+            });
             return [value.trim(), arrayDate[i], colorConvert(properties.bar_color), arrayAnnotation[i]];
         }
     });
-    var array = instance.data.newArray ? instance.data.newArray : instance.data.myArray;
 
     // Set chart options  
-    var options = {
+    instance.data.options = {
         title: properties.title,
         titleTextStyle: { color: colorConvert(properties.title_color), fontSize: properties.title_font_size, bold: properties.title_bold },
         width: properties.width,
@@ -69,29 +64,11 @@ function(instance, properties, context) {
 
         }
     };
+    instance.data.width = properties.bubble.width()
+    instance.data.height = properties.bubble.height()
+    instance.data.labelLegend = properties.label_legend
+    instance.data.valueType = properties.value_type
+    instance.data.valueLegend = properties.value_legend
 
-    $(document).ready(function () {
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', { 'packages': ['corechart'] });
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', properties.label_legend);
-            data.addColumn(properties.value_type, properties.value_legend);
-            data.addColumn({ type: 'string', role: 'style' });
-            data.addColumn({ type: 'string', role: 'annotation' });
-            data.addRows(array.sort((x, y) => x[1] - y[1]));
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.BarChart(document.getElementById(chartID));
-            chart.draw(data, options);
-        }
-    });
+    instance.data.drawChart(instance.data.myArray)
 }
