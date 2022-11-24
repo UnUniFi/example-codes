@@ -6,6 +6,25 @@ function(instance, context) {
     const chartID = "chart" + (Math.random() * Math.pow(3, 60)).toString();
     instance.data.id = chartID;
 
+    instance.data.colorConvert = (color) => {
+        let convertedColor
+        if (color.match("rgba")) {
+            const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
+            convertedColor = `${((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1)}`;
+        }
+        else {
+            convertedColor = properties.legend_color;
+        }
+        return '#' + convertedColor
+    }
+    instance.data.generateRandomColor = () => {
+        const randomColor = 'color: #';
+        for (const i = 0; i < 6; i++) {
+            randomColor += (16 * Math.random() | 0).toString(16);
+        }
+        return randomColor
+    }
+
     instance.data.drawChart = (array) => {
         const div = $('<div id="' + chartID + '" style="width: ' + instance.data.width + 'px; height:' + instance.data.height + 'px;"></div>');
         $(instance.canvas[0]).html(div);
@@ -32,7 +51,7 @@ function(instance, context) {
                 } else if (instance.data.sortedBy == 'annotation') {
                     data.addRows(array.sort((x, y) =>
                         Number(x[3].replace(instance.data.annotationSuffix, '')) - Number(y[3].replace(instance.data.annotationSuffix, ''))
-                    ));
+                    ).reverse());
                 } else {
                     data.addRows(array.sort((x, y) => x[1] - y[1]));
                 }

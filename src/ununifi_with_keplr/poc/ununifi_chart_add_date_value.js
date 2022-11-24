@@ -4,19 +4,8 @@ function(instance, properties, context) {
     const annotation = properties.annotation;
     const barColor = properties.bar_color;
 
-    function colorConvert(color) {
-        if (color.match("rgba")) {
-            var rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
-            var convertedColor = `${((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1)}`;
-        }
-        else {
-            var convertedColor = properties.legend_color;
-        }
-        return '#' + convertedColor
-    }
-
     // initialize
     let newArray = instance.data.myArray.slice()
-    newArray[newArray.length] = [label.trim(), value, colorConvert(barColor), annotation + '%']
+    newArray[newArray.length] = [label.trim(), value, instance.data.colorConvert(barColor), annotation + '%']
     instance.data.drawChart(newArray)
 }
