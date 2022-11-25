@@ -52,6 +52,14 @@ function(instance, properties, context) {
     instance.data.sortedBy = properties.sorted_by
     instance.data.annotationSuffix = properties.annotation_suffix
     instance.data.barColor = properties.bar_color
-
     instance.data.drawChart(instance.data.myArray)
+    const minValue = instance.data.myArray.reduce((prev, curr) => prev < curr[1] ? prev : curr[1], instance.data.myArray[0][1])
+    if (properties.value_type == 'number') {
+        instance.publishState('min_value', minValue)
+    } else {
+        instance.publishState('min_value', minValue.toLocaleString())
+    }
+    const sumLabelAnnotation = instance.data.myArray.reduce((prev, curr) => prev + Number(curr[0]) * Number(curr[3].replace(instance.data.annotationSuffix, '')), 0)
+    const sumLabel = instance.data.myArray.reduce((prev, curr) => prev + Number(curr[0]), 0)
+    instance.publishState('ave_annotation', (sumLabelAnnotation / sumLabel).toFixed(2))
 }
