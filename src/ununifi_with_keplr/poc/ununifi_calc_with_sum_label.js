@@ -26,7 +26,11 @@ function(instance, properties, context) {
         i++
     }
 
-    instance.publishState('min_value', minValue.toLocaleString())
+    if (instance.data.valueType == 'number') {
+        instance.publishState('min_value', minValue)
+    } else {
+        instance.publishState('min_value', minValue.toLocaleString())
+    }
     instance.publishState('ave_annotation', (sumLabelAnnotation / sumLabelTmp).toFixed(2))
     instance.data.drawChart(newArray)
 }

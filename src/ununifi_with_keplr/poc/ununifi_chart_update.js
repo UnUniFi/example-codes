@@ -61,5 +61,7 @@ function(instance, properties, context) {
     }
     const sumLabelAnnotation = instance.data.myArray.reduce((prev, curr) => prev + Number(curr[0]) * Number(curr[3].replace(instance.data.annotationSuffix, '')), 0)
     const sumLabel = instance.data.myArray.reduce((prev, curr) => prev + Number(curr[0]), 0)
+    instance.data.sumLabelAnnotation = sumLabelAnnotation
+    instance.data.sumLabel = sumLabel
     instance.publishState('ave_annotation', (sumLabelAnnotation / sumLabel).toFixed(2))
 }
