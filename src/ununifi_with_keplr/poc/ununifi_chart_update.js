@@ -1,6 +1,6 @@
 function(instance, properties, context) {
     const labels = properties.labels.split(',');
-    const values = properties.values.split(',');
+    const values = properties.values.split(',').map((value) => value.trim());
     const annotations = properties.annotations.split(',');
 
     const arrayAnnotation = annotations.map(function (value, i) {
@@ -13,13 +13,20 @@ function(instance, properties, context) {
                 return Number(value);
             });
             return [value.trim(), arrayNumber[i], instance.data.colorConvert(properties.bar_color), arrayAnnotation[i]];
-        } else {
+        } else if (properties.value_date_num) {
             const arrayDate = values.map(function (value, i) {
                 return (new Date(Number(value)));
             });
             return [value.trim(), arrayDate[i], instance.data.colorConvert(properties.bar_color), arrayAnnotation[i]];
+        } else {
+            const arrayDate = values.map(function (value, i) {
+                return (new Date(value));
+            });
+            return [value.trim(), arrayDate[i], instance.data.colorConvert(properties.bar_color), arrayAnnotation[i]];
         }
-    });
+    }).filter(data => data[0] != '0');
+    console.log(instance.data.myArray)
+
 
     // Set chart options  
     instance.data.options = {
